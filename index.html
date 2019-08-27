@@ -3,16 +3,25 @@
 <head>
   <meta charset="utf-8">
   <title>Quantified Self - Diary</title>
-  <link rel="stylesheet" type="text/css" href="./lib/reset.css">
+  <link href="https://fonts.googleapis.com/css?family=Lexend+Deca&display=swap" rel="stylesheet">
 </head>
 <body>
   <nav id='nav-bar'>
-    <a class='nav-link' href="/">Home</a>
+    <a class='nav-link' href="/">Foods</a>
+    <a class='nav-link' href="meals.html">Meals</a>
+    <a id='logo' href="/">Calorie Coacher</a>
   </nav>
   <section id='main-foods'>
-    <section id=food-list>
+    <h1>Favorite Foods</h1>
+    <section id=food-list></section>
+    <section id='new-food-form'>
+      <h3>Create a new favorite food!</h3>
+      <label for="name">Name</label>
+      <input id='name-input' type="name" name="name" required='required'><br>
+      <label for="calories">Calories</label>
+      <input id= 'calorie-input' type="calories" name="calories" ><br>
+      <button id='food-submit-button' class="default-button">Create New</button>
     </section>
-    <a id='create-food-button' href="foods.html"><button class="default-button">Create New</button></a>
   </section>
   <script
     src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js'>

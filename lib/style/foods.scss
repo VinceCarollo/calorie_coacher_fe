@@ -1,0 +1,25 @@
+body {
+  font-family: 'Lexend Deca', sans-serif;
+}
+
+.food {
+  color: black;
+  border: 3px solid #42428a;
+  text-align: center;
+  display: inline-block;
+  width: 300px;
+  margin: 5px 5px 5px 5px;
+  border-radius: 10px;
+}
+
+#main-foods {
+  text-align: center;
+}
+
+#name-input {
+  margin-left: 15px;
+}
+
+#food-submit-button {
+  margin-left: 50px;
+}
