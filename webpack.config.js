@@ -7,6 +7,7 @@ module.exports = {
   },
   output: {
     path: __dirname,
+    publicPath: "/calorie_coacher_fe/",
     filename: "[name].bundle.js"
   },
   module: {
