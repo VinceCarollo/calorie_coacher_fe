@@ -53,14 +53,27 @@
 	__webpack_require__(7);
 
 	$(document).ready(function () {
-	  var foods = $.get('https://calorie-coacher.herokuapp.com/api/v1/foods', function (data, status) {
-	    data.forEach(function (food) {
-	      appendFoodList(food);
+	  loadPage();
+
+	  function loadPage() {
+	    var foods = $.get('https://calorie-coacher.herokuapp.com/api/v1/foods', function (data, status) {
+	      data.forEach(function (food) {
+	        appendFoodList(food);
+	      });
 	    });
-	  });
+	  }
 
 	  function appendFoodList(food) {
-	    $('#food-list').append('\n      <section class=\'food\'>\n        <h3>' + food.name + '</h3>\n        <p>' + food.calories + ' Calories</p>\n      </section><br>\n      ');
+	    $('#food-list').append('\n      <section class=\'food\'>\n        <h3>' + food.name + '</h3>\n        <p>' + food.calories + ' Calories</p>\n        <button type="button" class="default-button delete-food" id=\'delete-food-' + food.id + '\'>Remove</button>\n      </section><br>\n      ');
+	  }
+
+	  function showFlashMessage(message) {
+	    $('#new-food-form').prepend('\n      <p id=\'flash-message\' style=\'text-align:center;\'></p>\n      ');
+	    $('#flash-message').html(message);
+	    $('#flash-message').slideDown('slow');
+	    setTimeout(function () {
+	      $('#flash-message').remove('');
+	    }, 3000);
 	  }
 
 	  $('#food-submit-button').click(function () {
@@ -73,7 +86,21 @@
 	    $.post('https://calorie-coacher.herokuapp.com/api/v1/foods', food).done(function () {
 	      appendFoodList(food);
 	    }).fail(function () {
-	      $('body').append('\n          <p style=\'text-align:center;\'>Food Not Created</p>\n          ');
+	      showFlashMessage('Invalid Food Entered');
+	    });
+	  });
+
+	  $('#main-foods').on('click', '.delete-food', function (event) {
+	    var elementId = event.target.id.split('-');
+	    var foodId = elementId[elementId.length - 1];
+	    $.ajax({
+	      url: 'https://calorie-coacher.herokuapp.com/api/v1/foods/' + foodId,
+	      type: 'DELETE'
+	    }).done(function () {
+	      $('#' + event.target.id).parent().remove();
+	      showFlashMessage("Successfully Deleted");
+	    }).fail(function () {
+	      showFlashMessage("Food Not Deleted");
 	    });
 	  });
 	});
@@ -461,7 +488,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  font-family: 'Lexend Deca', sans-serif; }\n\n.food {\n  color: black;\n  border: 3px solid #42428a;\n  text-align: center;\n  display: inline-block;\n  width: 300px;\n  margin: 5px 5px 5px 5px;\n  border-radius: 10px; }\n\n#main-foods {\n  text-align: center; }\n\n#name-input {\n  margin-left: 15px; }\n\n#food-submit-button {\n  margin-left: 50px; }\n", ""]);
+	exports.push([module.id, "body {\n  font-family: 'Lexend Deca', sans-serif; }\n\n#main-foods {\n  text-align: center; }\n\n#name-input {\n  margin-left: 15px; }\n\n.food {\n  color: black;\n  border: 3px solid #42428a;\n  text-align: center;\n  display: inline-block;\n  width: 300px;\n  margin: 5px 5px 5px 5px;\n  border-radius: 10px; }\n\n.food button {\n  width: 100%; }\n\n.default-button {\n  height: 40px;\n  width: 200px;\n  margin-top: 10px;\n  color: #fff !important;\n  text-transform: uppercase;\n  text-decoration: none;\n  background: #42428a;\n  border-radius: 5px;\n  display: inline-block;\n  border: none;\n  transition: all 0.4s ease 0s; }\n\n.default-button:hover {\n  background: #434343;\n  letter-spacing: 1px;\n  -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);\n  -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);\n  box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);\n  transition: all 0.4s ease 0s; }\n", ""]);
 
 	// exports
 
