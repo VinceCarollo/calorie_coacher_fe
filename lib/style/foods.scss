@@ -2,15 +2,6 @@ body {
   font-family: 'Lexend Deca', sans-serif;
 }
 
-.food {
-  color: black;
-  border: 3px solid #42428a;
-  text-align: center;
-  display: inline-block;
-  width: 300px;
-  margin: 5px 5px 5px 5px;
-  border-radius: 10px;
-}
 
 #main-foods {
   text-align: center;
@@ -22,4 +13,41 @@ body {
 
 #food-submit-button {
   margin-left: 50px;
+}
+
+.food {
+  color: black;
+  border: 3px solid #42428a;
+  text-align: center;
+  display: inline-block;
+  width: 300px;
+  margin: 5px 5px 5px 5px;
+  border-radius: 10px;
+}
+
+.food button {
+  width: 100%;
+}
+
+.default-button {
+  height: 40px; width: 200px;
+  margin-top: 10px;
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #42428a;
+  // padding: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+}
+
+.default-button:hover {
+  background: #434343;
+  letter-spacing: 1px;
+  -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  transition: all 0.4s ease 0s;
 }
