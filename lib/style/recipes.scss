@@ -1,0 +1,45 @@
+
+.recipe {
+  color: black;
+  border: 3px solid #42428a;
+  display: inline-block;
+  width: 100%;
+  margin: 5px 5px 5px 5px;
+  padding: 1px 1px 1px 1px;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.recipe a {
+  text-decoration: none;
+  color: black;
+  float: left;
+}
+
+.recipe a img {
+  width: 224px;
+}
+
+.recipe-info {
+  width: 300px;
+  float: right;
+  margin-right: 30%;
+}
+
+.food-type-recipe-header {
+  color: white;
+  background-color: #42428a;
+  height: 75px;
+  padding-top: 3px;
+}
+
+#main-recipes {
+  text-align: center;
+  display: block;
+  margin-top: 65px;
+}
+
+#recipe-page-description {
+  text-align: center;
+  font-style: italic;
+}
