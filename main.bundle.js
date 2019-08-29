@@ -52,15 +52,45 @@
 
 	__webpack_require__(7);
 
-	$(document).ready(function () {
-	  loadPage();
+	__webpack_require__(9);
 
-	  function loadPage() {
-	    var foods = $.get('https://calorie-coacher.herokuapp.com/api/v1/foods', function (data, status) {
+	$(document).ready(function () {
+	  var url = document.URL.split('/');
+	  var file = url[url.length - 1];
+
+	  if (file === 'index.html' || file === '') {
+	    loadFoodsPage();
+	  } else if (file === 'recipes.html') {
+	    loadRecipesPage();
+	  }
+
+	  function loadRecipesPage() {
+	    $.get('https://calorie-coacher.herokuapp.com/api/v1/foods', function (foods, status) {
+	      foods.forEach(function (food) {
+	        appendFoodTypesToRecipeList(food);
+	        $.get('https://calorie-coacher-recipes.herokuapp.com/api/v1/recipes/search?food_type=' + food.name.toLowerCase(), function (recipes, status) {
+	          recipes.forEach(function (recipe) {
+	            appendRecipeList(recipe, food);
+	          });
+	        });
+	      });
+	    });
+	  }
+
+	  function loadFoodsPage() {
+	    $.get('https://calorie-coacher.herokuapp.com/api/v1/foods', function (data, status) {
 	      data.forEach(function (food) {
 	        appendFoodList(food);
 	      });
 	    });
+	  }
+
+	  function appendFoodTypesToRecipeList(food) {
+	    $('#recipe-list').append('\n      <section class=\'food-type-recipe-header\'>\n        <h1>' + food.name + ' Recipes</h1>\n      </section>\n      <section id=\'food-' + food.id + '\'></section>\n      ');
+	  }
+
+	  function appendRecipeList(recipe, food) {
+	    $('#food-' + food.id).append('\n      <section class=\'recipe\'>\n        <a href=\'' + recipe.url + '\'><img src="' + recipe.image + '" alt="' + recipe.name + ' recipe image"></a>\n        <section class=\'recipe-info\'>\n          <a href=\'' + recipe.url + '\'><h3>' + recipe.name + '</h3></a>\n          <p>Calories: ' + recipe.calories + '</p>\n          <p>Prep Time: ' + recipe.prepTime + ' minutes</p>\n          <p>Number of Ingredients: ' + recipe.numIngredients + '</p>\n          <p>Servings: ' + recipe.servings + '</p>\n          <p>Type: ' + (recipe.cuisineType.charAt(0).toUpperCase() + recipe.cuisineType.slice(1)) + '</p>\n        </section>\n      </section>\n      ');
 	  }
 
 	  function appendFoodList(food) {
@@ -488,7 +518,7 @@
 
 
 	// module
-	exports.push([module.id, "body {\n  font-family: 'Lexend Deca', sans-serif; }\n\n#main-foods {\n  text-align: center; }\n\n#name-input {\n  margin-left: 15px; }\n\n.food {\n  color: black;\n  border: 3px solid #42428a;\n  text-align: center;\n  display: inline-block;\n  width: 300px;\n  margin: 5px 5px 5px 5px;\n  border-radius: 10px; }\n\n.food button {\n  width: 100%; }\n\n.default-button {\n  height: 40px;\n  width: 200px;\n  margin-top: 10px;\n  color: #fff !important;\n  text-transform: uppercase;\n  text-decoration: none;\n  background: #42428a;\n  border-radius: 5px;\n  display: inline-block;\n  border: none;\n  transition: all 0.4s ease 0s; }\n\n.default-button:hover {\n  background: #434343;\n  letter-spacing: 1px;\n  -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);\n  -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);\n  box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);\n  transition: all 0.4s ease 0s; }\n", ""]);
+	exports.push([module.id, "body {\n  font-family: 'Lexend Deca', sans-serif; }\n\n.food {\n  color: black;\n  border: 3px solid #42428a;\n  text-align: center;\n  display: inline-block;\n  width: 300px;\n  margin: 5px 5px 5px 5px;\n  border-radius: 10px; }\n\n.default-button {\n  height: 40px;\n  width: 200px;\n  margin-top: 10px;\n  color: #fff !important;\n  text-transform: uppercase;\n  text-decoration: none;\n  background: #42428a;\n  border-radius: 5px;\n  display: inline-block;\n  border: none;\n  transition: all 0.4s ease 0s; }\n\n.default-button:hover {\n  background: #434343;\n  letter-spacing: 1px;\n  -webkit-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);\n  -moz-box-shadow: 0px 5px 40px -10px rgba(0, 0, 0, 0.57);\n  box-shadow: 5px 40px -10px rgba(0, 0, 0, 0.57);\n  transition: all 0.4s ease 0s; }\n\n.food button {\n  width: 100%;\n  border-radius: 0px; }\n\n#main-foods {\n  margin-top: 80px;\n  text-align: center; }\n\n#name-input {\n  margin-left: 15px; }\n", ""]);
 
 	// exports
 
@@ -509,8 +539,8 @@
 	if(false) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./navbar.scss", function() {
-				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./navbar.scss");
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./recipes.scss", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./recipes.scss");
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -528,7 +558,47 @@
 
 
 	// module
-	exports.push([module.id, "#logo {\n  float: right;\n  margin-right: 30px;\n  font-size: 40px;\n  text-decoration: none;\n  color: white; }\n\n#nav-bar {\n  width: 100%;\n  height: 50px;\n  background-color: #42428a;\n  border: 1px solid black; }\n\n.nav-link {\n  color: white;\n  background-color: black;\n  display: inline-block;\n  width: 120px;\n  margin: 12px 3px 3px 3px;\n  text-align: center;\n  text-decoration: none;\n  font-size: 25px; }\n\n.nav-link:hover {\n  color: #42428a; }\n", ""]);
+	exports.push([module.id, ".recipe {\n  color: black;\n  border: 3px solid #42428a;\n  display: inline-block;\n  width: 100%;\n  margin: 5px 5px 5px 5px;\n  padding: 1px 1px 1px 1px;\n  border-radius: 10px;\n  text-align: left; }\n\n.recipe a {\n  text-decoration: none;\n  color: black;\n  float: left; }\n\n.recipe a img {\n  width: 224px; }\n\n.recipe-info {\n  width: 300px;\n  float: right;\n  margin-right: 30%; }\n\n.food-type-recipe-header {\n  color: white;\n  background-color: #42428a;\n  height: 75px;\n  padding-top: 3px; }\n\n#main-recipes {\n  text-align: center;\n  display: block;\n  margin-top: 65px; }\n\n#recipe-page-description {\n  text-align: center;\n  font-style: italic; }\n", ""]);
+
+	// exports
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	// style-loader: Adds some css to the DOM by adding a <style> tag
+
+	// load the styles
+	var content = __webpack_require__(10);
+	if(typeof content === 'string') content = [[module.id, content, '']];
+	// add the styles to the DOM
+	var update = __webpack_require__(4)(content, {});
+	if(content.locals) module.exports = content.locals;
+	// Hot Module Replacement
+	if(false) {
+		// When the styles change, update the <style> tags
+		if(!content.locals) {
+			module.hot.accept("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./navbar.scss", function() {
+				var newContent = require("!!../../node_modules/css-loader/index.js!../../node_modules/sass-loader/index.js!./navbar.scss");
+				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+				update(newContent);
+			});
+		}
+		// When the module is disposed, remove the <style> tags
+		module.hot.dispose(function() { update(); });
+	}
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	exports = module.exports = __webpack_require__(3)();
+	// imports
+
+
+	// module
+	exports.push([module.id, "#logo {\n  float: right;\n  margin-right: 30px;\n  font-size: 40px;\n  text-decoration: none;\n  color: white; }\n\n#nav-bar {\n  width: 100%;\n  height: 50px;\n  background-color: #42428a;\n  border: 1px solid black;\n  position: fixed;\n  top: 0; }\n\n.nav-link {\n  color: white;\n  background-color: black;\n  display: inline-block;\n  width: 120px;\n  margin: 12px 3px 3px 3px;\n  text-align: center;\n  text-decoration: none;\n  font-size: 25px; }\n\n.nav-link:hover {\n  color: #42428a; }\n", ""]);
 
 	// exports
 
